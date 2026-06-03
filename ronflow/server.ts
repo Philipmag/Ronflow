@@ -699,6 +699,75 @@ Do not include any markdowns or headers. Return pure JSON array.`,
 
 
 // -------------------------------------------------------------
+// SESSION CAPTURE ENDPOINTS (from Chrome Extension)
+// -------------------------------------------------------------
+
+// Create recording session from extension
+app.post("/api/sessions", async (req, res) => {
+  const { sessionId, startedAt, stoppedAt, events, tabUrl, tabTitle } = req.body;
+  
+  if (!events || !Array.isArray(events) || events.length === 0) {
+    return res.status(400).json({ error: "No workflow events provided" });
+  }
+  
+  console.log(`📹 Received session ${sessionId} with ${events.length} events`);
+  
+  // Transform extension events to internal format
+  const transformedEvents = events.map((ev) => ({
+    id: ev.id,
+    actionType: ev.actionType,
+    timestamp: ev.timestamp,
+    sequenceNumber: ev.sequenceNumber,
+    pageTitle: ev.pageTitle,
+    url: ev.url,
+    elementDetails: ev.elementDetails,
+    annotation: ev.annotation,
+    screenshotState: ev.screenshot?.dataUrl ? `data:${ev.screenshot.format};base64,${ev.screenshot.dataUrl.split(',')[1]}` : null,
+    isSensitive: ev.isSensitive || false
+  }));
+  
+  // Generate document using existing AI pipeline
+  try {
+    const response = await fetch(`http://localhost:${PORT}/api/generate-flow`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        events: transformedEvents,
+        scenarioName: tabTitle || 'Custom Workflow'
+      })
+    });
+    
+    if (response.ok) {
+      const doc = await response.json();
+      console.log(`✅ Document generated: ${doc.id}`);
+      
+      res.json({
+        success: true,
+        sessionId,
+        documentId: doc.id,
+        stepCount: doc.steps.length
+      });
+    } else {
+      throw new Error('AI processing failed');
+    }
+  } catch (err) {
+    console.error('Session processing error:', err);
+    res.status(500).json({ error: 'Failed to process session' });
+  }
+});
+
+// Get session status
+app.get("/api/sessions/:id/status", (req, res) => {
+  // For now, just return mock status
+  res.json({
+    sessionId: req.params.id,
+    status: 'completed',
+    processedAt: new Date().toISOString()
+  });
+});
+
+
+// -------------------------------------------------------------
 // VITE DEV / PRODUCTION INGRESS MIDDLEWARE
 // -------------------------------------------------------------
 async function startServer() {
