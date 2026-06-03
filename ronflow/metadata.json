@@ -1,0 +1,6 @@
+{
+  "name": "Ronflow",
+  "description": "AI-powered procedural documentation tool that automatically captures step-by-step workflows, generates polished SOPs with annotated steps, and exports employer-ready training guides.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
