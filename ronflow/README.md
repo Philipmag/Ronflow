@@ -87,4 +87,4 @@ git push -u origin main
 ```
 
 ---
-*Developed by Philipmag. Powered by Google AI Gemini-Flash.*
+*Developed by Philipmag.*
