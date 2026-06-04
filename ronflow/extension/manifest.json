@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Ronflow - AI Workflow Capture",
+  "version": "1.0.0",
+  "description": "Automatically capture your workflows and generate AI-powered procedural documentation with annotated screenshots.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "scripting",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.svg",
+      "48": "icons/icon48.svg",
+      "128": "icons/icon128.svg"
+    },
+    "default_title": "Ronflow Recording"
+  },
+  "icons": {
+    "16": "icons/icon16.svg",
+    "48": "icons/icon48.svg",
+    "128": "icons/icon128.svg"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["toolbar.html", "toolbar.css", "toolbar.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
