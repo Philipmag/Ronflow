@@ -1,5 +1,7 @@
 # Ronflow AI Engine
 
+[![CI](https://github.com/Philipmag/Ronflow/actions/workflows/ci.yml/badge.svg)](https://github.com/Philipmag/Ronflow/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Welcome to the **Ronflow** repository - a next-generation interactive procedural documentation assistant.
 
 ## 📁 Project Structure
