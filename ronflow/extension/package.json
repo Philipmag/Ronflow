@@ -1,0 +1,16 @@
+{
+  "name": "ronflow-extension",
+  "version": "1.0.0",
+  "description": "Ronflow Chrome Extension - AI Workflow Capture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "zip": "node zip-extension.js"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.0",
+    "vite": "^6.2.3"
+  }
+}
