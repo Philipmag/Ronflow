@@ -1,3 +1,12 @@
-Nothing should be ignored in this case, as only a markdown file (GO_LIVE_CHECKLIST.md) was added, which is a source/config file and not a build artifact, dependency, or temporary file.
-
-(empty output)
+node_modules/
+.next/
+dist/
+build/
+out/
+.env
+.env.local
+*.log
+npm-debug.log*
+.DS_Store
+coverage/
+.turbo/
