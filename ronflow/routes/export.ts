@@ -73,7 +73,9 @@ router.post('/:id/export/pdf', async (req: AuthRequest, res) => {
     pdfDoc.text(`Date: ${new Date(doc.updatedAt).toLocaleDateString()}`, { align: 'center' });
     pdfDoc.text(`Author: ${doc.ownerId}`, { align: 'center' });
     pdfDoc.moveDown(3);
-    pdfDoc.fontSize(10).text('Confidential - Internal Use Only', { align: 'center', color: '#999999' });
+    pdfDoc.fontSize(10).fillColor('#999999')
+      .text('Confidential - Internal Use Only', { align: 'center' });
+    pdfDoc.fillColor('black');
     
     pdfDoc.addPage();
 
@@ -82,10 +84,9 @@ router.post('/:id/export/pdf', async (req: AuthRequest, res) => {
     pdfDoc.moveDown(1);
     
     docSteps.forEach((step, index) => {
-      pdfDoc.fontSize(11).text(`${index + 1}. ${step.title}`, { 
+      pdfDoc.fontSize(11).fillColor('#0066cc').text(`${index + 1}. ${step.title}`, { 
         link: `#step-${index + 1}`,
-        underline: true,
-        color: '#0066cc'
+        underline: true
       });
     });
 
@@ -125,13 +126,16 @@ router.post('/:id/export/pdf', async (req: AuthRequest, res) => {
       
       if (step.notes) {
         pdfDoc.moveDown(0.5);
-        pdfDoc.fontSize(10).italic().text(`Note: ${step.notes}`, { color: '#666666' });
-        pdfDoc.fontSize(11).unitalic();
+        pdfDoc.fontSize(10).font('Helvetica-Oblique').fillColor('#666666')
+          .text(`Note: ${step.notes}`);
+        pdfDoc.fontSize(11).font('Helvetica').fillColor('black');
       }
 
       // Placeholder for screenshot annotation
       pdfDoc.moveDown(1);
-      pdfDoc.fontSize(10).text('[Screenshot would appear here in production]', { color: '#999999' });
+      pdfDoc.fontSize(10).fillColor('#999999')
+        .text('[Screenshot would appear here in production]');
+      pdfDoc.fillColor('black');
       pdfDoc.moveDown(2);
     });
 
