@@ -16,7 +16,7 @@ endpoints and before the session-capture section.
 import exportRoutes from './routes/export';
 import shareRoutes from './routes/share';
 import authRoutes from './routes/auth';
-import { authenticateToken } from './middleware/auth';
+import { authMiddleware } from './middleware/auth';
 
 // ============================================
 // ADD THESE ROUTE REGISTRATIONS
@@ -28,7 +28,7 @@ import { authenticateToken } from './middleware/auth';
 app.use('/api/auth', authRoutes);
 
 // Mount Export Routes (requires authentication)
-app.use('/api/docs', authenticateToken, exportRoutes);
+app.use('/api/docs', authMiddleware, exportRoutes);
 
 // Mount Share Routes (public view endpoints don't require auth)
 app.use('/api', shareRoutes);
