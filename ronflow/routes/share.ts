@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
+
+const SALT_ROUNDS = 10;
 import { documents, documentVersions, steps, shareLinks, auditLogs, viewEvents } from '../db/schema';
 import { db } from '../db';
 import { eq, desc, and } from 'drizzle-orm';
@@ -45,8 +47,7 @@ router.post('/:id/share', async (req: AuthRequest, res) => {
 
       if (password !== undefined) {
         if (password) {
-          const saltRounds = 10;
-          updateData.passwordHash = await bcrypt.hash(password, saltRounds);
+          updateData.passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
         } else {
           updateData.passwordHash = null;
         }
@@ -61,7 +62,7 @@ router.post('/:id/share', async (req: AuthRequest, res) => {
       // Create new share link
       shareToken = uuidv4().replace(/-/g, ''); // 32-char token without dashes
       
-      const passwordHash = password ? await bcrypt.hash(password, saltRounds) : null;
+      const passwordHash = password ? await bcrypt.hash(password, SALT_ROUNDS) : null;
 
       const newLink = await db.insert(shareLinks).values({
         id: uuidv4(),

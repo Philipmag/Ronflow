@@ -1,3 +1,13 @@
+# Integrating the Phase 4 routes into `server.ts`
+
+> This file is documentation, not a compiled module. It was previously
+> `server-integration-patch.ts`, which broke typechecking because it referenced
+> `app` from `server.ts` at top level.
+
+Apply the snippet below inside `server.ts`, after the existing AI pipeline
+endpoints and before the session-capture section.
+
+```ts
 // ============================================
 // ADD THIS CODE TO server.ts TO INTEGRATE PHASE 4 ROUTES
 // Add these imports at the top of server.ts after existing imports:
@@ -26,3 +36,4 @@ app.use('/api', shareRoutes);
 // ============================================
 // END OF PATCH
 // ============================================
+```
